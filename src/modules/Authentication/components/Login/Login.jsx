@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../../../api/axiosClient";
+import { AuthAPI } from "../../../../api";
+import { AuthContext } from "../../../../context/AuthContext";
 
-export default function Login({ saveLoginData }) {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const {saveLoginData} = useContext(AuthContext);
   let navigate = useNavigate();
 
   let {
@@ -24,7 +26,7 @@ export default function Login({ saveLoginData }) {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axiosClient.post("/Users/Login", data);
+      const response = await AuthAPI.Login(data);
       localStorage.setItem("token", response.data.token);
       saveLoginData();
       navigate("/dashboard");

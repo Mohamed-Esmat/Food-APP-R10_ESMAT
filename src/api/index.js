@@ -1,1 +1,1 @@
-// export * as AuthAPI from "./modules/auth";
+export * as AuthAPI from "./modules/auth";

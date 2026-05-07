@@ -18,27 +18,12 @@ import FavList from './modules/Favourites/components/FavList/FavList'
 import { useEffect, useState } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import ProtectedRoute from './modules/Shared/components/ProtectedRoute/ProtectedRoute'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
   //move then improve
   //lifting state up 
   //poc proof of concept
-
-  const [loginData, setLoginData] = useState(null);
-
-  const saveLoginData = ()=>{
-    let  encodedToken = localStorage.getItem('token');
-    let  decodedToken= jwtDecode(encodedToken);
-    setLoginData(decodedToken);
-  }
-
-  useEffect(() => {
-     
-    if(localStorage.getItem('token'))
-       saveLoginData()
-  
-  }, [])
-  
 
     const routes = createBrowserRouter(
       [
@@ -47,8 +32,8 @@ function App() {
             element:<AuthLayout/>,
             errorElement:<NotFound/>,
             children:[
-              {index:true,element:<Login saveLoginData={saveLoginData}/>},
-              {path:'login',element:<Login saveLoginData={saveLoginData}/>},
+              {index:true,element:<Login/>},
+              {path:'login',element:<Login/>},
               {path:'register',element:<Register/>},
               {path:'verify-account',element:<VerfiyAccount/>},
               {path:'forget-pass',element:<ForgetPass/>},
@@ -57,7 +42,7 @@ function App() {
         },
         {
             path:"dashboard",
-            element:<ProtectedRoute loginData={loginData}><MasterLayout loginData={loginData}/></ProtectedRoute>,
+            element:<ProtectedRoute><MasterLayout/></ProtectedRoute>,
             errorElement:<NotFound/>,
             children:[
               {index:true,element:<Dashboard/>},
@@ -73,6 +58,7 @@ function App() {
     )
     return (
       <>
+        <ToastContainer/>
         <RouterProvider router={routes}></RouterProvider>
       </>
     )
